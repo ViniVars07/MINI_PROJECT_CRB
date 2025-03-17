@@ -1,0 +1,93 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "HealthCareFac"
+		},
+		"HelthCarePostGres_password": {
+			"value": ""
+		},
+		"PostgreSql1_password": {
+			"value": ""
+		},
+		"PostgreSql2_password": {
+			"value": ""
+		},
+		"SnowFlake_Varshith_password": {
+			"value": ""
+		},
+		"Snowflake1_password": {
+			"value": ""
+		},
+		"Snowflake_Health_Care_password": {
+			"value": ""
+		},
+		"HelthCarePostGres_properties_typeProperties_server": {
+			"value": "localhost"
+		},
+		"HelthCarePostGres_properties_typeProperties_database": {
+			"value": "Health_Care"
+		},
+		"HelthCarePostGres_properties_typeProperties_username": {
+			"value": "postgres"
+		},
+		"PostgreSql1_properties_typeProperties_server": {
+			"value": "localhost"
+		},
+		"PostgreSql1_properties_typeProperties_database": {
+			"value": "Health_Care"
+		},
+		"PostgreSql1_properties_typeProperties_username": {
+			"value": "postgres"
+		},
+		"PostgreSql2_properties_typeProperties_server": {
+			"value": "localhost"
+		},
+		"PostgreSql2_properties_typeProperties_database": {
+			"value": "HotelFinalDataset"
+		},
+		"PostgreSql2_properties_typeProperties_username": {
+			"value": "postgres"
+		},
+		"SnowFlake_Varshith_properties_typeProperties_database": {
+			"value": "VARSHITH"
+		},
+		"SnowFlake_Varshith_properties_typeProperties_role": {
+			"value": "ACCOUNTADMIN"
+		},
+		"SnowFlake_Varshith_properties_typeProperties_host": {
+			"value": "RQFQNKS-GI45660.snowflakecomputing.com"
+		},
+		"Snowflake1_properties_typeProperties_database": {
+			"value": "VINI"
+		},
+		"Snowflake1_properties_typeProperties_role": {
+			"value": "ACCOUNTADMIN"
+		},
+		"Snowflake1_properties_typeProperties_host": {
+			"value": "RQFQNKS-GI45660.snowflakecomputing.com"
+		},
+		"Snowflake_Health_Care_properties_typeProperties_database": {
+			"value": "VINI"
+		},
+		"Snowflake_Health_Care_properties_typeProperties_role": {
+			"value": "ACCOUNTADMIN"
+		},
+		"Snowflake_Health_Care_properties_typeProperties_host": {
+			"value": "RQFQNKS-GI45660.snowflakecomputing.com"
+		},
+		"linkedService1_sasUri": {
+			"value": ""
+		},
+		"linkedService_Health_Care_sasUri": {
+			"value": ""
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

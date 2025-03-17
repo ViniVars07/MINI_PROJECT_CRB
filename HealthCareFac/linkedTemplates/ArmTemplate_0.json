@@ -1,0 +1,1142 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "HealthCareFac"
+		},
+		"HelthCarePostGres_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'HelthCarePostGres'"
+		},
+		"PostgreSql1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'PostgreSql1'"
+		},
+		"PostgreSql2_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'PostgreSql2'"
+		},
+		"SnowFlake_Varshith_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SnowFlake_Varshith'"
+		},
+		"Snowflake1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Snowflake1'"
+		},
+		"Snowflake_Health_Care_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Snowflake_Health_Care'"
+		},
+		"HelthCarePostGres_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "localhost"
+		},
+		"HelthCarePostGres_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Health_Care"
+		},
+		"HelthCarePostGres_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "postgres"
+		},
+		"PostgreSql1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "localhost"
+		},
+		"PostgreSql1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Health_Care"
+		},
+		"PostgreSql1_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "postgres"
+		},
+		"PostgreSql2_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "localhost"
+		},
+		"PostgreSql2_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "HotelFinalDataset"
+		},
+		"PostgreSql2_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "postgres"
+		},
+		"SnowFlake_Varshith_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "VARSHITH"
+		},
+		"SnowFlake_Varshith_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "ACCOUNTADMIN"
+		},
+		"SnowFlake_Varshith_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "RQFQNKS-GI45660.snowflakecomputing.com"
+		},
+		"Snowflake1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "VINI"
+		},
+		"Snowflake1_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "ACCOUNTADMIN"
+		},
+		"Snowflake1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "RQFQNKS-GI45660.snowflakecomputing.com"
+		},
+		"Snowflake_Health_Care_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "VINI"
+		},
+		"Snowflake_Health_Care_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "ACCOUNTADMIN"
+		},
+		"Snowflake_Health_Care_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "RQFQNKS-GI45660.snowflakecomputing.com"
+		},
+		"linkedService1_sasUri": {
+			"type": "secureString",
+			"metadata": "Secure string for 'sasUri' of 'linkedService1'"
+		},
+		"linkedService_Health_Care_sasUri": {
+			"type": "secureString",
+			"metadata": "Secure string for 'sasUri' of 'linkedService_Health_Care'"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Health-Care-Integration')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Vini-Self-Hosting')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "SelfHosted",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/HelthCarePostGres')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "PostgreSqlV2",
+				"typeProperties": {
+					"server": "[parameters('HelthCarePostGres_properties_typeProperties_server')]",
+					"port": 5432,
+					"database": "[parameters('HelthCarePostGres_properties_typeProperties_database')]",
+					"username": "[parameters('HelthCarePostGres_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('HelthCarePostGres_password')]"
+					},
+					"sslMode": 2,
+					"authenticationType": "Basic"
+				},
+				"connectVia": {
+					"referenceName": "Health-Care-Integration",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/Health-Care-Integration')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PostgreSql1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "PostgreSqlV2",
+				"typeProperties": {
+					"server": "[parameters('PostgreSql1_properties_typeProperties_server')]",
+					"port": 5432,
+					"database": "[parameters('PostgreSql1_properties_typeProperties_database')]",
+					"username": "[parameters('PostgreSql1_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('PostgreSql1_password')]"
+					},
+					"sslMode": 2,
+					"authenticationType": "Basic"
+				},
+				"connectVia": {
+					"referenceName": "Vini-Self-Hosting",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/Vini-Self-Hosting')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PostgreSql2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "PostgreSqlV2",
+				"typeProperties": {
+					"server": "[parameters('PostgreSql2_properties_typeProperties_server')]",
+					"port": 5432,
+					"database": "[parameters('PostgreSql2_properties_typeProperties_database')]",
+					"username": "[parameters('PostgreSql2_properties_typeProperties_username')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('PostgreSql2_password')]"
+					},
+					"sslMode": 2,
+					"authenticationType": "Basic"
+				},
+				"connectVia": {
+					"referenceName": "Vini-Self-Hosting",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/Vini-Self-Hosting')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowFlake_Varshith')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "GI45660",
+					"user": "ViniVars",
+					"database": "[parameters('SnowFlake_Varshith_properties_typeProperties_database')]",
+					"warehouse": "COMPUTE_WH",
+					"role": "[parameters('SnowFlake_Varshith_properties_typeProperties_role')]",
+					"host": "[parameters('SnowFlake_Varshith_properties_typeProperties_host')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('SnowFlake_Varshith_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "Vini-Self-Hosting",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/Vini-Self-Hosting')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Snowflake1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "GI45660",
+					"user": "ViniVars",
+					"database": "[parameters('Snowflake1_properties_typeProperties_database')]",
+					"warehouse": "COMPUTE_WH",
+					"role": "[parameters('Snowflake1_properties_typeProperties_role')]",
+					"host": "[parameters('Snowflake1_properties_typeProperties_host')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Snowflake1_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "Vini-Self-Hosting",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/Vini-Self-Hosting')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Snowflake_Health_Care')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "SnowflakeV2",
+				"typeProperties": {
+					"authenticationType": "Basic",
+					"accountIdentifier": "GI45660",
+					"user": "ViniVars",
+					"database": "[parameters('Snowflake_Health_Care_properties_typeProperties_database')]",
+					"warehouse": "COMPUTE_WH",
+					"role": "[parameters('Snowflake_Health_Care_properties_typeProperties_role')]",
+					"host": "[parameters('Snowflake_Health_Care_properties_typeProperties_host')]",
+					"password": {
+						"type": "SecureString",
+						"value": "[parameters('Snowflake_Health_Care_password')]"
+					}
+				},
+				"connectVia": {
+					"referenceName": "Health-Care-Integration",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/Health-Care-Integration')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/linkedService1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"sasUri": "[parameters('linkedService1_sasUri')]"
+				},
+				"connectVia": {
+					"referenceName": "Vini-Self-Hosting",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/Vini-Self-Hosting')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/linkedService_Health_Care')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"sasUri": "[parameters('linkedService_Health_Care_sasUri')]"
+				},
+				"connectVia": {
+					"referenceName": "Health-Care-Integration",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/Health-Care-Integration')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PostgreSqlTable4')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HelthCarePostGres",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"vini": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "PostgreSqlV2Table",
+				"schema": [],
+				"typeProperties": {
+					"schema": "PUBLIC",
+					"table": {
+						"value": "@dataset().vini",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/HelthCarePostGres')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PostgreSqlTable5')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HelthCarePostGres",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "PostgreSqlV2Table",
+				"schema": [],
+				"typeProperties": {
+					"schema": "public",
+					"table": "trans"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/HelthCarePostGres')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PostgreSqlTable6')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HelthCarePostGres",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "PostgreSqlV2Table",
+				"schema": [],
+				"typeProperties": {
+					"schema": "public",
+					"table": "products"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/HelthCarePostGres')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/PostgreSqlTable7')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "HelthCarePostGres",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "PostgreSqlV2Table",
+				"schema": [],
+				"typeProperties": {
+					"schema": "public",
+					"table": "customers"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/HelthCarePostGres')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable4')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_Health_Care",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"vars": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [],
+				"typeProperties": {
+					"schema": "PUBLIC",
+					"table": {
+						"value": "@dataset().vars",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_Health_Care')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable5')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_Health_Care",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [
+					{
+						"name": "CUSTOMER_ID",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "PRODUCT_ID",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "PAYMENT_MONTH",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "REVENUE_TYPE",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "REVENUE",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 2
+					},
+					{
+						"name": "QUANTITY",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "DIMENSION_1",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "DIMENSION_2",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "DIMENSION_3",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "DIMENSION_4",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "DIMENSION_5",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "DIMENSION_6",
+						"type": "BOOLEAN"
+					},
+					{
+						"name": "DIMENSION_7",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "DIMENSION_8",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "DIMENSION_9",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "DIMENSION_10",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "COMPANIES",
+						"type": "VARCHAR"
+					}
+				],
+				"typeProperties": {
+					"schema": "PUBLIC",
+					"table": "TRANS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_Health_Care')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable6')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_Health_Care",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [
+					{
+						"name": "PRODUCT_ID",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "PRODUCT_FAMILY",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "PRODUCT_SUB_FAMILY",
+						"type": "VARCHAR"
+					}
+				],
+				"typeProperties": {
+					"schema": "PUBLIC",
+					"table": "PRODUCTS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_Health_Care')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SnowflakeTable7')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Snowflake_Health_Care",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "SnowflakeV2Table",
+				"schema": [
+					{
+						"name": "COMPANY",
+						"type": "VARCHAR"
+					},
+					{
+						"name": "CUSTOMER_ID",
+						"type": "NUMBER",
+						"precision": 38,
+						"scale": 0
+					},
+					{
+						"name": "CUSTOMER_NAME",
+						"type": "VARCHAR"
+					}
+				],
+				"typeProperties": {
+					"schema": "PUBLIC",
+					"table": "CUSTOMERS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Snowflake_Health_Care')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CopyPipeLine')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@variables('iter')",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "PostgreSqlV2Source"
+										},
+										"sink": {
+											"type": "SnowflakeV2Sink",
+											"importSettings": {
+												"type": "SnowflakeImportCopyCommand"
+											}
+										},
+										"enableStaging": true,
+										"stagingSettings": {
+											"linkedServiceName": {
+												"referenceName": "linkedService_Health_Care",
+												"type": "LinkedServiceReference"
+											}
+										},
+										"translator": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "PostgreSqlTable4",
+											"type": "DatasetReference",
+											"parameters": {
+												"vini": {
+													"value": "@item()",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "SnowflakeTable4",
+											"type": "DatasetReference",
+											"parameters": {
+												"vars": {
+													"value": "@item()",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "Customer",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "PostgreSqlV2Source"
+							},
+							"sink": {
+								"type": "SnowflakeV2Sink",
+								"importSettings": {
+									"type": "SnowflakeImportCopyCommand"
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService_Health_Care",
+									"type": "LinkedServiceReference"
+								}
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "company",
+											"type": "String"
+										},
+										"sink": {
+											"name": "COMPANY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "customer_id",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "CUSTOMER_ID",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "customer_name",
+											"type": "String"
+										},
+										"sink": {
+											"name": "CUSTOMER_NAME",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "PostgreSqlTable7",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SnowflakeTable7",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Product",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Customer",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "PostgreSqlV2Source"
+							},
+							"sink": {
+								"type": "SnowflakeV2Sink",
+								"importSettings": {
+									"type": "SnowflakeImportCopyCommand"
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService_Health_Care",
+									"type": "LinkedServiceReference"
+								}
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "product_id",
+											"type": "String"
+										},
+										"sink": {
+											"name": "PRODUCT_ID",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "product_family",
+											"type": "String"
+										},
+										"sink": {
+											"name": "PRODUCT_FAMILY",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "product_sub_family",
+											"type": "String"
+										},
+										"sink": {
+											"name": "PRODUCT_SUB_FAMILY",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "PostgreSqlTable6",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SnowflakeTable6",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Trans",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Product",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "PostgreSqlV2Source"
+							},
+							"sink": {
+								"type": "SnowflakeV2Sink",
+								"importSettings": {
+									"type": "SnowflakeImportCopyCommand"
+								}
+							},
+							"enableStaging": true,
+							"stagingSettings": {
+								"linkedServiceName": {
+									"referenceName": "linkedService_Health_Care",
+									"type": "LinkedServiceReference"
+								}
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "customer_id",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "CUSTOMER_ID",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "product_id",
+											"type": "String"
+										},
+										"sink": {
+											"name": "PRODUCT_ID",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "payment_month",
+											"type": "String"
+										},
+										"sink": {
+											"name": "PAYMENT_MONTH",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "revenue_type",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "REVENUE_TYPE",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "revenue",
+											"type": "Decimal"
+										},
+										"sink": {
+											"name": "REVENUE",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "quantity",
+											"type": "Int32"
+										},
+										"sink": {
+											"name": "QUANTITY",
+											"type": "Int64"
+										}
+									},
+									{
+										"source": {
+											"name": "dimension_1",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DIMENSION_1",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "dimension_2",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DIMENSION_2",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "dimension_3",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DIMENSION_3",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "dimension_4",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DIMENSION_4",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "dimension_5",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DIMENSION_5",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "dimension_6",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DIMENSION_6",
+											"type": "Boolean"
+										}
+									},
+									{
+										"source": {
+											"name": "dimension_7",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DIMENSION_7",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "dimension_8",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DIMENSION_8",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "dimension_9",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DIMENSION_9",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "dimension_10",
+											"type": "String"
+										},
+										"sink": {
+											"name": "DIMENSION_10",
+											"type": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "companies",
+											"type": "String"
+										},
+										"sink": {
+											"name": "COMPANIES",
+											"type": "String"
+										}
+									}
+								]
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "PostgreSqlTable5",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "SnowflakeTable5",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"iter": {
+						"type": "Array",
+						"defaultValue": [
+							"CUSTOMERS",
+							"PRODUCTS",
+							"TRANS"
+						]
+					}
+				},
+				"annotations": [],
+				"lastPublishTime": "2025-03-15T12:46:22Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/PostgreSqlTable7')]",
+				"[concat(variables('factoryId'), '/datasets/SnowflakeTable7')]",
+				"[concat(variables('factoryId'), '/datasets/PostgreSqlTable6')]",
+				"[concat(variables('factoryId'), '/datasets/SnowflakeTable6')]",
+				"[concat(variables('factoryId'), '/datasets/PostgreSqlTable5')]",
+				"[concat(variables('factoryId'), '/datasets/SnowflakeTable5')]",
+				"[concat(variables('factoryId'), '/linkedServices/linkedService_Health_Care')]",
+				"[concat(variables('factoryId'), '/datasets/PostgreSqlTable4')]",
+				"[concat(variables('factoryId'), '/datasets/SnowflakeTable4')]"
+			]
+		}
+	]
+}

@@ -1,0 +1,224 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "HealthCareFac"
+		},
+		"HelthCarePostGres_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'HelthCarePostGres'"
+		},
+		"PostgreSql1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'PostgreSql1'"
+		},
+		"PostgreSql2_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'PostgreSql2'"
+		},
+		"SnowFlake_Varshith_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'SnowFlake_Varshith'"
+		},
+		"Snowflake1_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Snowflake1'"
+		},
+		"Snowflake_Health_Care_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'Snowflake_Health_Care'"
+		},
+		"HelthCarePostGres_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "localhost"
+		},
+		"HelthCarePostGres_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Health_Care"
+		},
+		"HelthCarePostGres_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "postgres"
+		},
+		"PostgreSql1_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "localhost"
+		},
+		"PostgreSql1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "Health_Care"
+		},
+		"PostgreSql1_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "postgres"
+		},
+		"PostgreSql2_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "localhost"
+		},
+		"PostgreSql2_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "HotelFinalDataset"
+		},
+		"PostgreSql2_properties_typeProperties_username": {
+			"type": "string",
+			"defaultValue": "postgres"
+		},
+		"SnowFlake_Varshith_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "VARSHITH"
+		},
+		"SnowFlake_Varshith_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "ACCOUNTADMIN"
+		},
+		"SnowFlake_Varshith_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "RQFQNKS-GI45660.snowflakecomputing.com"
+		},
+		"Snowflake1_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "VINI"
+		},
+		"Snowflake1_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "ACCOUNTADMIN"
+		},
+		"Snowflake1_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "RQFQNKS-GI45660.snowflakecomputing.com"
+		},
+		"Snowflake_Health_Care_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "VINI"
+		},
+		"Snowflake_Health_Care_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "ACCOUNTADMIN"
+		},
+		"Snowflake_Health_Care_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "RQFQNKS-GI45660.snowflakecomputing.com"
+		},
+		"linkedService1_sasUri": {
+			"type": "secureString",
+			"metadata": "Secure string for 'sasUri' of 'linkedService1'"
+		},
+		"linkedService_Health_Care_sasUri": {
+			"type": "secureString",
+			"metadata": "Secure string for 'sasUri' of 'linkedService_Health_Care'"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "HealthCareFac_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"HelthCarePostGres_password": {
+						"value": "[parameters('HelthCarePostGres_password')]"
+					},
+					"PostgreSql1_password": {
+						"value": "[parameters('PostgreSql1_password')]"
+					},
+					"PostgreSql2_password": {
+						"value": "[parameters('PostgreSql2_password')]"
+					},
+					"SnowFlake_Varshith_password": {
+						"value": "[parameters('SnowFlake_Varshith_password')]"
+					},
+					"Snowflake1_password": {
+						"value": "[parameters('Snowflake1_password')]"
+					},
+					"Snowflake_Health_Care_password": {
+						"value": "[parameters('Snowflake_Health_Care_password')]"
+					},
+					"HelthCarePostGres_properties_typeProperties_server": {
+						"value": "[parameters('HelthCarePostGres_properties_typeProperties_server')]"
+					},
+					"HelthCarePostGres_properties_typeProperties_database": {
+						"value": "[parameters('HelthCarePostGres_properties_typeProperties_database')]"
+					},
+					"HelthCarePostGres_properties_typeProperties_username": {
+						"value": "[parameters('HelthCarePostGres_properties_typeProperties_username')]"
+					},
+					"PostgreSql1_properties_typeProperties_server": {
+						"value": "[parameters('PostgreSql1_properties_typeProperties_server')]"
+					},
+					"PostgreSql1_properties_typeProperties_database": {
+						"value": "[parameters('PostgreSql1_properties_typeProperties_database')]"
+					},
+					"PostgreSql1_properties_typeProperties_username": {
+						"value": "[parameters('PostgreSql1_properties_typeProperties_username')]"
+					},
+					"PostgreSql2_properties_typeProperties_server": {
+						"value": "[parameters('PostgreSql2_properties_typeProperties_server')]"
+					},
+					"PostgreSql2_properties_typeProperties_database": {
+						"value": "[parameters('PostgreSql2_properties_typeProperties_database')]"
+					},
+					"PostgreSql2_properties_typeProperties_username": {
+						"value": "[parameters('PostgreSql2_properties_typeProperties_username')]"
+					},
+					"SnowFlake_Varshith_properties_typeProperties_database": {
+						"value": "[parameters('SnowFlake_Varshith_properties_typeProperties_database')]"
+					},
+					"SnowFlake_Varshith_properties_typeProperties_role": {
+						"value": "[parameters('SnowFlake_Varshith_properties_typeProperties_role')]"
+					},
+					"SnowFlake_Varshith_properties_typeProperties_host": {
+						"value": "[parameters('SnowFlake_Varshith_properties_typeProperties_host')]"
+					},
+					"Snowflake1_properties_typeProperties_database": {
+						"value": "[parameters('Snowflake1_properties_typeProperties_database')]"
+					},
+					"Snowflake1_properties_typeProperties_role": {
+						"value": "[parameters('Snowflake1_properties_typeProperties_role')]"
+					},
+					"Snowflake1_properties_typeProperties_host": {
+						"value": "[parameters('Snowflake1_properties_typeProperties_host')]"
+					},
+					"Snowflake_Health_Care_properties_typeProperties_database": {
+						"value": "[parameters('Snowflake_Health_Care_properties_typeProperties_database')]"
+					},
+					"Snowflake_Health_Care_properties_typeProperties_role": {
+						"value": "[parameters('Snowflake_Health_Care_properties_typeProperties_role')]"
+					},
+					"Snowflake_Health_Care_properties_typeProperties_host": {
+						"value": "[parameters('Snowflake_Health_Care_properties_typeProperties_host')]"
+					},
+					"linkedService1_sasUri": {
+						"value": "[parameters('linkedService1_sasUri')]"
+					},
+					"linkedService_Health_Care_sasUri": {
+						"value": "[parameters('linkedService_Health_Care_sasUri')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
