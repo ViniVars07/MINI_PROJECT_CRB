@@ -1,0 +1,22 @@
+{
+	"name": "Snowflake_Health_Care",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "SnowflakeV2",
+		"typeProperties": {
+			"authenticationType": "Basic",
+			"accountIdentifier": "GI45660",
+			"user": "ViniVars",
+			"database": "VINI",
+			"warehouse": "COMPUTE_WH",
+			"role": "ACCOUNTADMIN",
+			"host": "RQFQNKS-GI45660.snowflakecomputing.com",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJiYWU1N2ExMy0yZmU5LTRjZWUtYTllYi1lYjA2ZTAyMzA0NDkiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "Health-Care-Integration",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
