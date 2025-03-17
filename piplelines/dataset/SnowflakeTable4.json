@@ -1,0 +1,24 @@
+{
+	"name": "SnowflakeTable4",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_Health_Care",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"vars": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [],
+		"typeProperties": {
+			"schema": "PUBLIC",
+			"table": {
+				"value": "@dataset().vars",
+				"type": "Expression"
+			}
+		}
+	}
+}

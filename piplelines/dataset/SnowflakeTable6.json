@@ -1,0 +1,29 @@
+{
+	"name": "SnowflakeTable6",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Snowflake_Health_Care",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "PRODUCT_ID",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "PRODUCT_FAMILY",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "PRODUCT_SUB_FAMILY",
+				"type": "VARCHAR"
+			}
+		],
+		"typeProperties": {
+			"schema": "PUBLIC",
+			"table": "PRODUCTS"
+		}
+	}
+}

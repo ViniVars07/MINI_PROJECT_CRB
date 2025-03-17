@@ -3,7 +3,82 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Customers",
+				"name": "ForEach1",
+				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('iter')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "PostgreSqlV2Source"
+								},
+								"sink": {
+									"type": "SnowflakeV2Sink",
+									"importSettings": {
+										"type": "SnowflakeImportCopyCommand"
+									}
+								},
+								"enableStaging": true,
+								"stagingSettings": {
+									"linkedServiceName": {
+										"referenceName": "linkedService_Health_Care",
+										"type": "LinkedServiceReference"
+									}
+								},
+								"translator": {
+									"value": "@item()",
+									"type": "Expression"
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "PostgreSqlTable4",
+									"type": "DatasetReference",
+									"parameters": {
+										"vini": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SnowflakeTable4",
+									"type": "DatasetReference",
+									"parameters": {
+										"vars": {
+											"value": "@item()",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Customer",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -27,10 +102,9 @@
 					"enableStaging": true,
 					"stagingSettings": {
 						"linkedServiceName": {
-							"referenceName": "linkedService1",
+							"referenceName": "linkedService_Health_Care",
 							"type": "LinkedServiceReference"
-						},
-						"path": ""
+						}
 					},
 					"translator": {
 						"type": "TabularTranslator",
@@ -70,21 +144,28 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "PostgreSqlTable1",
+						"referenceName": "PostgreSqlTable7",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "SnowflakeTable1",
+						"referenceName": "SnowflakeTable7",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "Products",
+				"name": "Product",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Customer",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -106,7 +187,7 @@
 					"enableStaging": true,
 					"stagingSettings": {
 						"linkedServiceName": {
-							"referenceName": "linkedService1",
+							"referenceName": "linkedService_Health_Care",
 							"type": "LinkedServiceReference"
 						}
 					},
@@ -148,13 +229,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "PostgreSqlTable3",
+						"referenceName": "PostgreSqlTable6",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "SnowflakeTable3",
+						"referenceName": "SnowflakeTable6",
 						"type": "DatasetReference"
 					}
 				]
@@ -162,7 +243,14 @@
 			{
 				"name": "Trans",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Product",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -184,7 +272,7 @@
 					"enableStaging": true,
 					"stagingSettings": {
 						"linkedServiceName": {
-							"referenceName": "linkedService1",
+							"referenceName": "linkedService_Health_Care",
 							"type": "LinkedServiceReference"
 						}
 					},
@@ -366,18 +454,28 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "PostgreSqlTable2",
+						"referenceName": "PostgreSqlTable5",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "SnowflakeTable2",
+						"referenceName": "SnowflakeTable5",
 						"type": "DatasetReference"
 					}
 				]
 			}
 		],
+		"variables": {
+			"iter": {
+				"type": "Array",
+				"defaultValue": [
+					"CUSTOMERS",
+					"PRODUCTS",
+					"TRANS"
+				]
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2025-03-15T12:46:22Z"
 	},
